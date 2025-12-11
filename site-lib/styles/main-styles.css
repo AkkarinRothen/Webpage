@@ -683,3 +683,129 @@ body.theme-light .excalidraw-svg svg.light {
 .clickable-icon, .feature-title { transition: color var(--color-fade-speed) ease-in-out; }
 .scale-down { transition: transform .2s ease-in-out; transform: scale(.9); }
 .scale-up { transition: transform .2s ease-in-out; transform: scale(1); }
+
+/* ==========================================================================
+   MEJORA ESTÉTICA - MODERN LOOK & FEEL
+   ========================================================================== */
+
+/* 1. TIPOGRAFÍA Y CUERPO GENERAL 
+   -------------------------------------------------------------------------- */
+body {
+  /* Fuente más moderna y legible */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  line-height: 1.6 !important;
+  --file-margins: 3rem; /* Más aire alrededor del texto */
+}
+
+/* 2. EFECTO "PÁGINA DE PAPEL" CENTRADA
+   -------------------------------------------------------------------------- */
+/* Esto crea una tarjeta blanca centrada con sombra, estilo Notion/Medium */
+.markdown-preview-sizer, 
+.markdown-source-view .cm-scroller { 
+  max-width: 850px !important; /* Ancho de lectura óptimo */
+  margin: 0 auto !important;
+  padding: 40px 60px !important;
+  border-radius: 12px;
+  /* Sombra suave para profundidad */
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1); 
+  background-color: var(--background-primary);
+}
+
+/* Fondo detrás de la "hoja" (solo visible si la ventana es muy ancha) */
+.view-content {
+  background-color: var(--background-secondary) !important;
+}
+
+/* 3. ENCABEZADOS (H1 - H6)
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em !important; /* Tracking moderno */
+  color: var(--text-title-h1);
+  margin-top: 1.5em !important;
+  margin-bottom: 0.5em !important;
+}
+
+h1 {
+  font-weight: 800 !important;
+  background: linear-gradient(120deg, var(--interactive-accent), var(--text-normal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-bottom: 0.5em;
+  border-bottom: 2px solid var(--background-modifier-border);
+}
+
+h2 {
+  font-weight: 700 !important;
+  border-left: 4px solid var(--interactive-accent);
+  padding-left: 10px;
+}
+
+/* 4. ENLACES CON ESTILO
+   -------------------------------------------------------------------------- */
+a, .cm-hmd-internal-link {
+  text-decoration: none !important;
+  color: var(--interactive-accent) !important;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+a:hover, .cm-hmd-internal-link:hover {
+  border-bottom: 1px solid var(--interactive-accent);
+  opacity: 0.8;
+}
+
+/* 5. BLOQUES DE CÓDIGO Y CITAS
+   -------------------------------------------------------------------------- */
+/* Bloques de código más limpios */
+pre, code {
+  font-family: 'Fira Code', 'JetBrains Mono', monospace !important;
+  font-size: 0.9em;
+  background-color: var(--background-primary-alt) !important;
+  border-radius: 6px;
+}
+
+/* Citas (Blockquotes) estilizadas */
+blockquote {
+  border-left: 3px solid var(--interactive-accent) !important;
+  background-color: var(--background-secondary-alt);
+  padding: 1em 1.5em !important;
+  border-radius: 0 8px 8px 0;
+  margin-left: 0 !important;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* 6. LISTAS Y VIÑETAS
+   -------------------------------------------------------------------------- */
+ul, ol {
+  padding-inline-start: 2em !important;
+}
+
+li {
+  margin-bottom: 0.3em;
+}
+
+/* 7. BARRA LATERAL (FILE EXPLORER) MÁS LIMPIA
+   -------------------------------------------------------------------------- */
+.nav-file-title, .nav-folder-title {
+  border-radius: 6px;
+  margin-bottom: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.nav-file-title:hover, .nav-folder-title:hover {
+  background-color: var(--background-modifier-hover) !important;
+}
+
+/* Indicador visual de archivo activo */
+.nav-file-title.is-active {
+  background-color: var(--interactive-accent-hover) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* Ocultar líneas guía del árbol para un look más limpio */
+.tree-item-children {
+  border-left: none !important; 
+}
