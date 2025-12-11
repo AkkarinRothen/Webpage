@@ -1,13 +1,9 @@
 /* ==========================================================================
-   MASTER THEME: OBSIDIAN MODERN WEB
+   CONFIGURACIÓN GLOBAL Y VARIABLES
    ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   1. VARIABLES Y CONFIGURACIÓN GLOBAL
-   -------------------------------------------------------------------------- */
 :root {
   --color-fade-speed: 0.2s;
-  /* Configuración del Toggle de Tema (Sol/Luna) */
+  /* Ajustes para el toggle del tema */
   --toggle-width: 3.5em;
   --toggle-height: 1.75em;
   --border-radius: calc(var(--toggle-height) / 2);
@@ -15,270 +11,675 @@
   --handle-radius: calc(var(--handle-width) / 2);
   --handle-margin: calc((var(--toggle-height) / 2.0) - var(--handle-radius));
   --handle-translation: calc(var(--toggle-width) - var(--handle-width) - (var(--handle-margin) * 2));
-  /* Configuración de Diseño */
-  --file-margins: 3rem;
-  --max-width-content: 850px; /* Ancho de lectura óptimo */
 }
 
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-  line-height: 1.6 !important;
+/* ==========================================================================
+   EXPLORADOR DE ARCHIVOS (FILE EXPLORER)
+   ========================================================================== */
+#file-explorer {
+  padding: 0 !important;
 }
 
-/* --------------------------------------------------------------------------
-   2. DISEÑO "PÁGINA DE PAPEL" (LAYOUT)
-   -------------------------------------------------------------------------- */
-/* Fondo general detrás de la hoja */
-.view-content {
-  background-color: var(--background-secondary) !important;
+/* Iconos del árbol de archivos */
+.tree-icon {
+  border: 1px solid transparent;
+  margin: 0 4px 0 0;
+  display: flex;
+  align-self: center;
 }
 
-/* La "Hoja" de contenido centrada */
-.markdown-preview-sizer, 
-.markdown-source-view .cm-scroller { 
-  max-width: var(--max-width-content) !important;
-  margin: 0 auto !important;
-  padding: 40px 60px !important; /* Espacio interior de la hoja */
-  border-radius: 12px;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-  background-color: var(--background-primary);
+.tree-icon :is(svg, img) {
+  width: 1em !important;
+  height: 1em !important;
 }
 
-/* Ajustes para que el texto no toque los bordes en el modo edición */
-.cm-content {
-  max-width: 100%;
+.tree-icon :has(svg, img) {
+  display: contents !important;
 }
 
-/* --------------------------------------------------------------------------
-   3. ESTILOS DE CONTENIDO (TIPOGRAFÍA RICO)
-   -------------------------------------------------------------------------- */
-/* Títulos Generales */
-h1, h2, h3, h4, h5, h6 {
-  letter-spacing: -0.02em !important;
-  color: var(--text-title-h1);
-  margin-top: 1.5em !important;
-  margin-bottom: 0.5em !important;
+/* Items del árbol */
+.tree-item-self {
+  display: flex !important;
+  align-items: center !important;
 }
 
-/* H1: Gradiente y subrayado */
-h1 {
-  font-weight: 800 !important;
-  background: linear-gradient(120deg, var(--interactive-accent), var(--text-normal));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  padding-bottom: 0.5em;
-  border-bottom: 2px solid var(--background-modifier-border);
-}
-
-/* H2: Barra lateral de acento */
-h2 {
-  font-weight: 700 !important;
-  border-left: 4px solid var(--interactive-accent);
-  padding-left: 10px;
-}
-
-/* Listas dentro de H1 (corrección) */
-h1 li {
-  translate: calc(0px - var(--list-indent)) 0;
-}
-
-/* Enlaces */
-a, .cm-hmd-internal-link {
+.tree-item-self.is-clickable {
   text-decoration: none !important;
-  color: var(--interactive-accent) !important;
-  font-weight: 500;
-  border-bottom: 1px solid transparent;
-  transition: all 0.2s ease;
+  text-decoration-line: none !important;
 }
 
-a:hover, .cm-hmd-internal-link:hover {
-  border-bottom: 1px solid var(--interactive-accent);
-  opacity: 0.8;
+/* Negrita para carpetas raíz */
+#outline .tree-item[data-depth="1"]:not(.mod-collapsible) > .tree-item-self {
+  font-weight: 900;
+  font-size: 1.05em;
 }
 
-/* Bloques de Código */
-pre, code {
-  font-family: 'Fira Code', 'JetBrains Mono', monospace !important;
-  font-size: 0.9em;
-  background-color: var(--background-primary-alt) !important;
-  border-radius: 6px;
+/* Ocultar carpetas vacías o filtradas */
+.tree-item-children:empty {
+  display: none !important;
 }
 
-/* Citas (Blockquotes) */
-blockquote {
-  border-left: 3px solid var(--interactive-accent) !important;
-  background-color: var(--background-secondary-alt);
-  padding: 1em 1.5em !important;
-  border-radius: 0 8px 8px 0;
-  margin-left: 0 !important;
-  font-style: italic;
-  color: var(--text-muted);
+.tree-item.filtered-out {
+  display: none;
 }
 
-/* Listas */
-ul, ol { padding-inline-start: 2em !important; }
-li { margin-bottom: 0.3em; }
+/* Títulos y márgenes */
+.tree-container .feature-title {
+  flex-grow: 0 !important;
+  margin-right: .5em !important;
+  font-size: inherit !important;
+  color: var(--text-normal) !important;
+}
 
-/* Emoji grande de página */
+.tree-item:not(.mod-collapsible) > .tree-item-self {
+  padding-left: calc(var(--nav-item-children-margin-start, var(--nav-item-children-margin-left)) - .35em);
+}
+
+.tree-container {
+  --nav-item-size: 1em;
+  overflow: hidden auto;
+  height: 100%;
+}
+
+.nav-file-title,
+.nav-folder-title {
+  line-height: var(--tree-vertical-spacing) !important;
+}
+
+/* ==========================================================================
+   ENCABEZADOS Y TÍTULOS (TYPOGRAPHY)
+   ========================================================================== */
+.heading p {
+  margin: 0 !important;
+}
+
+/* Icono de página web (Emoji grande) */
 #webpage-icon {
   font-size: 40px;
   margin-bottom: 8px;
   font-family: emoji;
   width: fit-content;
 }
-#webpage-icon :is(svg, img) {
-  width: 100%; height: 100%; box-shadow: none !important; border: none !important;
-  border-radius: 0 !important; stroke: currentColor; margin: 0 !important; padding: 0 !important;
-}
-#webpage-icon :has(:is(svg, img)) { display: contents !important; }
 
-/* Título Inline */
+#webpage-icon :is(svg, img) {
+  width: 100%;
+  height: 100%;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  stroke: currentColor;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#webpage-icon :has(:is(svg, img)) {
+  display: contents !important;
+}
+
+#webpage-icon:has(:is(svg, img)) {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+}
+
+/* Inline Title (Título integrado) */
 body.show-inline-title .page-title {
   font-weight: var(--inline-title-weight);
   font-size: var(--inline-title-size);
-  color: var(--inline-title-color);
+  font-style: var(--inline-title-style);
+  font-variant: var(--inline-title-variant);
+  font-family: var(--inline-title-font);
   letter-spacing: -.015em;
+  color: var(--inline-title-color);
 }
 
-/* --------------------------------------------------------------------------
-   4. NAVEGACIÓN Y EXPLORADOR DE ARCHIVOS
-   -------------------------------------------------------------------------- */
-#file-explorer { padding: 0 !important; }
-
-/* Iconos y estructura del árbol */
-.tree-icon {
-  border: 1px solid transparent; margin: 0 4px 0 0; display: flex; align-self: center;
-}
-.tree-icon :is(svg, img) { width: 1em !important; height: 1em !important; }
-.tree-item-self { display: flex !important; align-items: center !important; }
-.tree-item-children:empty, .tree-item.filtered-out { display: none !important; }
-
-/* Estilo de items en el explorador */
-.nav-file-title, .nav-folder-title {
-  border-radius: 6px;
-  margin-bottom: 2px;
-  line-height: var(--tree-vertical-spacing) !important;
-  transition: background-color 0.2s ease;
+/* Corrección de sangría en listas dentro de H1 */
+h1 li {
+  translate: calc(0px - var(--list-indent)) 0;
 }
 
-.nav-file-title:hover, .nav-folder-title:hover {
-  background-color: var(--background-modifier-hover) !important;
+/* Indicadores de colapso (...) */
+.heading {
+  position: relative;
 }
 
-/* Archivo Activo (Highlight) */
-.nav-file-title.is-active {
-  background-color: var(--interactive-accent-hover) !important;
-  color: #fff !important;
-  font-weight: 600;
-}
-
-/* Carpetas raíz en negrita */
-#outline .tree-item[data-depth="1"]:not(.mod-collapsible) > .tree-item-self {
-  font-weight: 900; font-size: 1.05em;
-}
-
-/* Indicadores de colapso en headings (...) */
 .heading.is-collapsed::after {
-  content: "..." !important; display: inline-block !important; position: absolute !important;
-  margin-left: .3em !important; color: var(--text-muted);
+  content: "..." !important;
+  display: inline-block !important;
+  position: absolute !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-left: .3em !important;
+  color: var(--text-muted);
 }
-.heading .heading-collapse-indicator {
-  opacity: 0; transition: opacity .15s ease-in-out; position: absolute; left: -2em !important;
-}
-.heading:hover > .heading-collapse-indicator { opacity: 1; }
 
-/* --------------------------------------------------------------------------
-   5. BOTÓN DE TEMA (SOL/LUNA ANIMADO)
-   -------------------------------------------------------------------------- */
-.theme-toggle-container { cursor: pointer; display: flex; align-items: center; gap: 1em; }
-.theme-toggle-input { display: none; z-index: 1000; }
+.heading .heading-collapse-indicator {
+  opacity: 0;
+  transition: opacity .15s ease-in-out;
+  position: absolute;
+  z-index: 1;
+  padding: 0 !important;
+  padding-left: 2em !important;
+  padding-right: 1em !important;
+  left: -2em !important;
+}
+
+.heading:hover > .heading-collapse-indicator {
+  opacity: 1;
+}
+
+.collapse-icon:not(.list-collapse-indicator) svg.svg-icon {
+  color: var(--nav-collapse-icon-color);
+  width: var(--collapse-arrow-size);
+  height: var(--collapse-arrow-size);
+  transition: transform .1s ease-in-out 0s;
+  stroke-width: 4px;
+  min-width: 10px;
+  min-height: 10px;
+  max-width: 24px;
+  max-height: 24px;
+}
+
+.heading-collapse-indicator.collapse-icon.is-collapsed > svg {
+  transition: transform .1s ease-in-out;
+  transform: rotate(-90deg);
+}
+
+/* ==========================================================================
+   LAYOUT PRINCIPAL Y VISTA PREVIA
+   ========================================================================== */
+html > body > #main-horizontal > #center-content > .obsidian-document > .markdown-preview-sizer > div:not(:is(.footer, .header)) {
+  margin-inline: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html > body > #main-horizontal > #center-content > .obsidian-document > .markdown-preview-sizer > div {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Sidebar en móvil */
+body.is-phone .sidebar {
+  font-size: 1.15em;
+  --tree-vertical-spacing: 1.8em;
+  --sidebar-width: 85vw !important;
+}
+
+body.is-phone {
+  --collapse-arrow-size: 14px;
+  --tree-vertical-spacing: 0.8em;
+}
+
+/* Manejadores de redimensionamiento (Sidebar Handles) */
+.sidebar-handle {
+  width: min(max(calc(var(--sidebar-margin) / 2), 3px), 12px);
+  height: calc(100vh - 2 * var(--radius-l));
+  margin-top: var(--radius-l);
+  margin-bottom: var(--radius-l);
+  top: 0;
+  position: absolute;
+  cursor: ew-resize;
+  z-index: 1;
+  transition: background-color .2s ease-in-out;
+}
+
+.sidebar .sidebar-handle:hover ~ .leaf-content,
+.sidebar.is-resizing .leaf-content {
+  box-shadow: 0 0 0 var(--divider-width-hover) var(--divider-color-hover);
+}
+
+#left-sidebar .sidebar-handle { right: 0; }
+#right-sidebar .sidebar-handle { left: 0; }
+
+/* ==========================================================================
+   BOTÓN DE TEMA (SOL/LUNA) - ANIMACIÓN
+   ========================================================================== */
+.theme-toggle-container {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+}
+
+.theme-toggle-input {
+  display: none;
+  z-index: 1000;
+}
+
 .toggle-background {
-  position: relative; width: var(--toggle-width); height: var(--toggle-height);
-  border-radius: var(--border-radius); background-color: var(--background-modifier-border);
-  transition: background-color var(--color-fade-speed); z-index: 1000; animation-duration: .2s;
+  position: relative;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  border-radius: var(--border-radius);
+  background-color: var(--background-modifier-border);
+  transition: background-color var(--color-fade-speed);
+  z-index: 1000;
+  animation-duration: .2s;
 }
+
 .toggle-background::before {
-  content: ""; position: absolute; left: var(--handle-margin); top: var(--handle-margin);
-  height: var(--handle-width); width: var(--handle-width); border-radius: var(--handle-radius);
-  background-color: var(--text-normal); box-shadow: inset 0 1px 1px rgba(0, 0, 0, .2);
-  animation: toggle-slide-left ease-in-out normal both; animation-duration: inherit; z-index: 1000;
+  content: "";
+  position: absolute;
+  left: var(--handle-margin);
+  top: var(--handle-margin);
+  height: var(--handle-width);
+  width: var(--handle-width);
+  border-radius: var(--handle-radius);
+  background-color: var(--text-normal);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .2);
+  animation: toggle-slide-left ease-in-out normal both;
+  animation-duration: inherit;
+  z-index: 1000;
 }
+
 .toggle-background::after {
-  content: ""; position: absolute; right: var(--handle-margin); top: calc(var(--handle-margin));
-  height: var(--handle-width); width: var(--handle-width); transition: transform .3s;
+  content: "";
+  position: absolute;
+  right: var(--handle-margin);
+  top: calc(var(--handle-margin));
+  height: var(--handle-width);
+  width: var(--handle-width);
+  transition: transform .3s;
   background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>') no-repeat center center;
   transform: scale(.9);
 }
-/* Estados del Toggle */
-.theme-toggle-input:checked ~ .toggle-background::before { animation: toggle-slide-right ease-in-out normal both; }
-.theme-toggle-input:active ~ .toggle-background::before { animation: toggle-expand-right ease-in-out normal both; }
-.theme-toggle-input:active:checked ~ .toggle-background::before { animation: toggle-expand-left ease-in-out normal both; }
+
+/* Estados del Toggle (Checked/Active) */
+.theme-toggle-input:checked ~ .toggle-background::before {
+  animation: toggle-slide-right ease-in-out normal both;
+  animation-duration: inherit;
+}
+
+.theme-toggle-input:active ~ .toggle-background::before {
+  animation: toggle-expand-right ease-in-out normal both;
+  animation-duration: inherit;
+}
+
+.theme-toggle-input:active:checked ~ .toggle-background::before {
+  animation: toggle-expand-left ease-in-out normal both;
+  animation-duration: inherit;
+}
+
 .theme-toggle-input:checked ~ .toggle-background::after {
   transform: translateX(calc(var(--handle-translation) * -1)) scale(.9);
   background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>') no-repeat center center;
 }
-/* Keyframes Toggle */
-@keyframes toggle-slide-right { 0%{width:var(--handle-width);transform:translateX(0)} 50%{width:calc(var(--toggle-width)*.5)} 90%{width:var(--handle-width)} 100%{transform:translateX(var(--handle-translation))} }
-@keyframes toggle-slide-left { 0%{width:var(--handle-width);transform:translateX(calc(var(--handle-translation)-((var(--toggle-width)*.33)-var(--handle-width))))} 70%{width:calc(var(--toggle-width)*.5)} 100%{width:var(--handle-width);transform:translateX(0)} }
-@keyframes toggle-expand-right { 0%{width:var(--handle-width)} 100%{width:calc(var(--toggle-width)*.33)} }
-@keyframes toggle-expand-left { 0%{width:var(--handle-width);transform:translateX(var(--handle-translation))} 100%{width:calc(var(--toggle-width)*.33);transform:translateX(calc(var(--handle-translation)-((var(--toggle-width)*.33)-var(--handle-width))))} }
 
-/* --------------------------------------------------------------------------
-   6. BÚSQUEDA Y GRÁFICO
-   -------------------------------------------------------------------------- */
-/* Búsqueda */
-#search-container { --input-height: 2.6em; display: flex !important; }
+/* Keyframes de animación del toggle */
+@keyframes toggle-slide-right {
+  0% { width: var(--handle-width); transform: translateX(0); }
+  50% { width: calc(var(--toggle-width) * .5); }
+  90% { width: var(--handle-width); }
+  100% { transform: translateX(var(--handle-translation)); }
+}
+
+@keyframes toggle-slide-left {
+  0% { width: var(--handle-width); transform: translateX(calc(var(--handle-translation) - ((var(--toggle-width) * .33) - var(--handle-width)))); }
+  70% { width: calc(var(--toggle-width) * .5); }
+  100% { width: var(--handle-width); transform: translateX(0); }
+}
+
+@keyframes toggle-expand-right {
+  0% { width: var(--handle-width); }
+  100% { width: calc(var(--toggle-width) * .33); }
+}
+
+@keyframes toggle-expand-left {
+  0% { width: var(--handle-width); transform: translateX(var(--handle-translation)); }
+  100% { width: calc(var(--toggle-width) * .33); transform: translateX(calc(var(--handle-translation) - ((var(--toggle-width) * .33) - var(--handle-width)))); }
+}
+
+/* ==========================================================================
+   VISTA DE GRÁFICO (GRAPH VIEW)
+   ========================================================================== */
+.graph-view-wrapper {
+  --graph-view-max-height: 35vh;
+}
+
+#graph-canvas {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  transition: opacity .2s ease-in-out;
+}
+
+.graph-view-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: var(--graph-view-max-height);
+  display: flex;
+  transition: background-color var(--color-fade-speed) ease-in-out;
+  touch-action: none;
+  border: 1px solid var(--modal-border-color);
+  border-radius: var(--modal-radius);
+  overflow: hidden;
+}
+
+.graph-view-container.expanded {
+  position: fixed;
+  width: 90%;
+  height: 90%;
+  max-height: unset;
+  right: 5%;
+  top: 5%;
+  background-color: var(--background-secondary);
+  z-index: 100;
+}
+
+body:is(.is-phone, .is-tablet) .graph-view-container.expanded {
+  width: 95%;
+  height: 95%;
+  right: 2.5%;
+  top: 2.5%;
+}
+
+/* Iconos dentro del gráfico */
+.graph-icon {
+  position: absolute;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color .2s ease-in-out;
+}
+
+.graph-icon svg { width: 20px; height: 20px; }
+.graph-icon:hover { color: var(--interactive-accent); }
+.graph-icon.graph-expand { top: 6px; right: 6px; }
+.graph-icon.graph-global { top: 6px; right: 32px; }
+
+.graph-view-placeholder {
+  padding: 0;
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: var(--graph-view-max-height);
+  position: relative;
+  flex: none;
+}
+
+.graph-view-placeholder:has(.expanded) {
+  border-radius: var(--modal-radius);
+  border: 1px solid var(--modal-border-color);
+}
+
+/* ==========================================================================
+   ANIMACIÓN DE CARGA (LOADING)
+   ========================================================================== */
+.loading-icon {
+  --width: 80px;
+  --height: 80px;
+  display: inline-block;
+  position: fixed;
+  left: calc(50% - var(--width)/ 2);
+  top: calc(50% - var(--height)/ 2);
+  width: var(--width);
+  height: var(--height);
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+  pointer-events: none;
+}
+
+.loading-icon.show { opacity: 1; }
+
+.loading-icon div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--interactive-accent);
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.loading-icon div:first-child { left: 8px; animation: lds-ellipsis1 .6s infinite; }
+.loading-icon div:nth-child(2) { left: 8px; animation: lds-ellipsis2 .6s infinite; }
+.loading-icon div:nth-child(3) { left: 32px; animation: lds-ellipsis2 .6s infinite; }
+.loading-icon div:nth-child(4) { left: 56px; animation: lds-ellipsis3 .6s infinite; }
+.loading-icon:not(.show) div { animation-play-state: paused; }
+
+@keyframes lds-ellipsis1 {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+@keyframes lds-ellipsis3 {
+  0% { transform: scale(1); }
+  100% { transform: scale(0); }
+}
+@keyframes lds-ellipsis2 {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(24px, 0); }
+}
+
+/* ==========================================================================
+   POPOVER Y PREVISUALIZACIÓN (Hover)
+   ========================================================================== */
+.file-preview.popover.hover-popover {
+  opacity: 1;
+  transition: opacity .2s ease-in-out;
+  resize: both;
+  min-width: var(--popover-width);
+  min-height: 8em;
+  height: var(--popover-height);
+  width: var(--popover-width);
+}
+
+.file-preview.popover.hover-popover .markdown-embed {
+  max-height: unset !important;
+  width: 100% !important;
+  min-width: var(--popover-width);
+  min-height: 8em;
+}
+
+.preview-action-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px;
+  padding-right: 10px;
+  width: 100% !important;
+  display: flex;
+  gap: 5px;
+  z-index: 1000;
+}
+
+/* Botones de acción del popover */
+.popover-action {
+  display: block;
+  background-color: var(--icon-color);
+  width: var(--icon-size);
+  height: var(--icon-size);
+  mask-size: 100% 100%;
+  mask-position: center;
+  mask-repeat: no-repeat;
+}
+
+.popover-action:hover { background-color: var(--icon-color-hover); }
+.popover-action:active { background-color: var(--interactive-accent); }
+
+/* Iconos SVG embebidos para botones */
+.popover-action.drag-handle {
+  margin-right: auto;
+  cursor: move;
+  mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-grip"><circle cx="12" cy="5" r="1"/><circle cx="19" cy="5" r="1"/><circle cx="5" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="19" cy="19" r="1"/><circle cx="5" cy="19" r="1"/></svg>');
+}
+
+.popover-action.pin-button {
+  cursor: pointer;
+  mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>');
+  transition: mask-image .3s ease;
+}
+
+.popover-action.pin-button.pinned {
+  background-color: var(--interactive-accent);
+  mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pin-off"><path d="M12 17v5"/><path d="M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89"/><path d="m2 2 20 20"/><path d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11"/></svg>');
+}
+
+.popover-action.go-to-button {
+  cursor: pointer;
+  mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-symlink"><path d="m10 18 3-3-3-3"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M4 11V4a2 2 0 0 1 2-2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h7"/></svg>');
+}
+
+/* ==========================================================================
+   BÚSQUEDA (SEARCH)
+   ========================================================================== */
+#search-results { padding: 1em; }
+
+.search-result { display: flex; }
+
+.search-result a {
+  padding: calc(var(--tree-vertical-spacing) / 2);
+  border-radius: var(--radius-s);
+  width: 100%;
+  color: var(--nav-item-color);
+  text-decoration: none;
+}
+
+.search-result a:hover {
+  background-color: var(--nav-item-background-hover);
+  text-decoration: underline;
+  color: var(--nav-item-color-active);
+}
+
+.search-mark {
+  margin: 0 !important;
+  padding: 0 !important;
+  scroll-margin: 2em !important;
+}
+
+#search-container {
+  --input-height: 2.6em;
+  display: flex !important;
+}
+
+#search-container:has(+ #search-results) > input[type=search] {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+input[type=search] {
+  box-shadow: none !important;
+  height: var(--input-height);
+  font-size: 1em;
+  transition: background, background-color, border;
+  transition-duration: var(--color-fade-speed);
+  transition-timing-function: ease-in-out;
+}
+
+/* Icono de búsqueda */
 #search-container::before {
   mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'></circle><line x1='21' y1='21' x2='16.65' y2='16.65'></line></svg>");
-  mask-repeat: no-repeat; top: 50%; transform: translateY(-50%); z-index: 1;
-}
-input[type=search] {
-  box-shadow: none !important; height: var(--input-height);
-  transition: background-color var(--color-fade-speed) ease-in-out;
-}
-.search-result a { padding: 0.5em; border-radius: 4px; width: 100%; display: block; }
-.search-result a:hover { background-color: var(--nav-item-background-hover); text-decoration: underline; }
-
-/* Gráfico */
-.graph-view-wrapper { --graph-view-max-height: 35vh; }
-.graph-view-container {
-  border: 1px solid var(--modal-border-color); border-radius: var(--modal-radius); overflow: hidden;
-}
-.graph-view-container.expanded {
-  position: fixed; width: 90%; height: 90%; right: 5%; top: 5%;
-  background-color: var(--background-secondary); z-index: 100;
+  mask-repeat: no-repeat;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
 }
 
-/* --------------------------------------------------------------------------
-   7. PLUGINS (Kanban, Excalidraw, Canvas)
-   -------------------------------------------------------------------------- */
-#center-content .kanban-plugin { padding: 0; margin: 0; height: 100%; font-size: .875rem; }
-.excalidraw-plugin { background-color: var(--background-primary); }
-body.theme-dark .excalidraw-plugin svg.dark { filter: invert(93%) hue-rotate(180deg); }
-.canvas-controls, .canvas-card-menu { display: none; }
-
-/* Popovers */
-.file-preview.popover.hover-popover {
-  opacity: 1; min-width: var(--popover-width); height: var(--popover-height);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2); border-radius: 8px;
-}
-.popover-action {
-  background-color: var(--icon-color); mask-size: 100% 100%; mask-repeat: no-repeat;
-}
-
-/* --------------------------------------------------------------------------
-   8. AJUSTES PARA MÓVIL (RESPONSIVE)
-   -------------------------------------------------------------------------- */
-body.is-phone .markdown-preview-sizer, 
-body.is-phone .markdown-source-view .cm-scroller {
-  /* En móvil, quitamos el efecto "hoja centrada" para usar toda la pantalla */
-  max-width: 100% !important;
-  padding: 15px !important;
-  box-shadow: none !important;
-  border-radius: 0;
-  margin: 0 !important;
+/* ==========================================================================
+   PLUGINS Y EXTRAS
+   ========================================================================== */
+/* Kanban */
+#center-content .kanban-plugin {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  font-family: var(--font-text, var(--default-font));
+  font-size: .875rem;
+  line-height: var(--line-height-tight);
+  width: unset;
+  overflow-y: unset;
+  overflow-wrap: unset;
+  color: unset;
+  user-select: unset;
+  -webkit-user-select: unset;
 }
 
-body.is-phone .sidebar {
-  --sidebar-width: 85vw !important;
+#center-content .kanban-plugin__item-button-wrapper,
+.kanban-plugin__item-postfix-button.clickable-icon,
+.kanban-plugin__lane-grip,
+.kanban-plugin__lane-settings-button.clickable-icon {
+  display: none;
 }
+
+/* Excalidraw */
+.excalidraw-plugin rect, .excalidraw-svg rect { fill: transparent; }
+
+.excalidraw-plugin mask rect[fill="#fff"],
+.excalidraw-plugin mask rect[fill="#ffffff"],
+.excalidraw-svg mask rect[fill="#fff"],
+.excalidraw-svg mask rect[fill="#ffffff"] {
+  fill: #ffffff;
+}
+
+.excalidraw-plugin mask rect[fill="#000"],
+.excalidraw-plugin mask rect[fill="#000000"],
+.excalidraw-svg mask rect[fill="#000"],
+.excalidraw-svg mask rect[fill="#000000"] {
+  fill: #000000;
+}
+
+body.theme-dark .excalidraw-plugin svg.dark,
+body.theme-dark .excalidraw-svg svg.dark,
+body.theme-light .excalidraw-plugin svg.light,
+body.theme-light .excalidraw-svg svg.light {
+  filter: invert(93%) hue-rotate(180deg);
+}
+
+.excalidraw-plugin > svg { width: 100%; height: 100%; }
+.excalidraw-plugin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+}
+
+/* Mindmap (Mapas mentales) */
+.obsidian-document:not([data-type=markdown]):has(.mm-mindmap) {
+  overflow-y: none;
+}
+
+.obsidian-document:not([data-type=markdown]) .mm-mindmap {
+  transform: scale(1);
+  translate: -4000px -4000px;
+  top: 70%;
+  left: 50%;
+  position: absolute;
+  overflow: hidden;
+  width: 100vw;
+}
+
+/* Canvas */
+.canvas { translate: 0 0; scale: 1 1; will-change: translate, scale; }
+.canvas-controls, .canvas-card-menu { display: none; cursor: default !important; }
+.canvas.small-scale :is(.canvas-node-label, .canvas-path-label, .obsidian-document) { display: none; }
+
+/* Backlinks */
+#backlinks {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  transition: opacity .2s ease-in-out;
+}
+
+/* Estilos de Impresión */
+@media print {
+  html body.publish :is(.sidebar, script, style, include) { display: none !important; }
+  :root, html body.publish > :is(#main-horizontal, #center-content, .obsidian-document):not(script, style, include) { display: contents !important; }
+  :root, html body.publish #center-content > .obsidian-document { background-color: transparent !important; }
+  body { display: inline !important; background: var(--background-primary); }
+  body #center-content > .obsidian-document > .markdown-preview-sizer { padding: var(--file-margins); padding-bottom: 0; }
+  html body.publish :is(#center-content, .obsidian-document) { margin: 0 !important; padding: 0 !important; }
+}
+
+/* Utilidades varias */
+.clickable-icon, .feature-title { transition: color var(--color-fade-speed) ease-in-out; }
+.scale-down { transition: transform .2s ease-in-out; transform: scale(.9); }
+.scale-up { transition: transform .2s ease-in-out; transform: scale(1); }
