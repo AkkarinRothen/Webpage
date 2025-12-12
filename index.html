@@ -1,265 +1,304 @@
-import React, { useState } from 'react';
-import { BookOpen, Calendar, FileText, Image as ImageIcon, ChevronRight, GraduationCap, Clock, Search, Book } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Índice de Contenidos | Cultura y Literatura</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, .serif {
+            font-family: 'Merriweather', serif;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-const CourseViewer = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  // Simulación de los archivos detectados en la carpeta 'universidad/cultura'
-  const files = [
-    {
-      id: '01',
-      filename: '01_timeline_textos.html',
-      title: 'Línea de Tiempo de Textos',
-      type: 'timeline',
-      year: 'General',
-      category: 'Referencia'
-    },
-    {
-      id: '02.1',
-      filename: '02.1_1623-frethorne,-richard-letter-to-his-parents.html',
-      title: 'Letter to his Parents',
-      author: 'Richard Frethorne',
-      year: '1623',
-      type: 'text',
-      category: 'Literatura Colonial'
-    },
-    {
-      id: '02.2',
-      filename: '02.2_vocabulario-histórico-frethorne-letter-to-his-parents.html',
-      title: 'Vocabulario Histórico: Frethorne',
-      relatedTo: 'Richard Frethorne',
-      type: 'vocabulary',
-      category: 'Recursos'
-    },
-    {
-      id: '02.3',
-      filename: '02.3_1630-winthrop,-john-a-model-of-christian-charity.html',
-      title: 'A Model of Christian Charity',
-      author: 'John Winthrop',
-      year: '1630',
-      type: 'text',
-      category: 'Literatura Colonial'
-    },
-    {
-      id: '02.4',
-      filename: '02.4_vocabulario-y-conceptos-históricos-winthrop-john-a-model-of-christian-charity.html',
-      title: 'Vocabulario y Conceptos: Winthrop',
-      relatedTo: 'John Winthrop',
-      type: 'vocabulary',
-      category: 'Recursos'
-    },
-    {
-      id: '02.5',
-      filename: '02.5_1650-bradstreet,-anne-poemas.html',
-      title: 'Poemas Selectos',
-      author: 'Anne Bradstreet',
-      year: '1650',
-      type: 'text',
-      category: 'Poesía Colonial'
-    },
-    {
-      id: '02.6a',
-      filename: '02.6_to-my-dear-and-loving-husband.html',
-      title: 'To My Dear and Loving Husband',
-      author: 'Anne Bradstreet',
-      year: '1650',
-      type: 'text',
-      category: 'Poesía Colonial'
-    },
-    {
-      id: '02.6b',
-      filename: '02.6_ritmo-y-estructura-to-my-dear-and-loving-husband.html',
-      title: 'Análisis: Ritmo y Estructura',
-      relatedTo: 'Anne Bradstreet',
-      type: 'analysis',
-      category: 'Análisis Literario'
-    },
-    {
-      id: 'ana',
-      filename: 'analisis-de-before-the-birth-of-one-of-her-children.html',
-      title: 'Análisis: Before the Birth of One of Her Children',
-      author: 'Desconocido',
-      type: 'analysis',
-      category: 'Análisis Literario'
-    },
-    {
-      id: 'img1',
-      filename: 'images/masscolony-1630-1691.webp',
-      title: 'Mapa: Massachusetts Bay Colony (1630-1691)',
-      type: 'image',
-      category: 'Mapas e Imágenes'
-    },
-    {
-      id: 'img2',
-      filename: 'images/anne-bradstreet.png',
-      title: 'Retrato: Anne Bradstreet',
-      type: 'image',
-      category: 'Mapas e Imágenes'
-    }
-  ];
-
-  const filteredFiles = files.filter(file => 
-    file.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    file.filename.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (file.author && file.author.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
-
-  const getIcon = (type) => {
-    switch (type) {
-      case 'timeline': return <Clock className="w-5 h-5 text-purple-500" />;
-      case 'text': return <BookOpen className="w-5 h-5 text-blue-500" />;
-      case 'vocabulary': return <Book className="w-5 h-5 text-green-500" />;
-      case 'analysis': return <FileText className="w-5 h-5 text-orange-500" />;
-      case 'image': return <ImageIcon className="w-5 h-5 text-pink-500" />;
-      default: return <FileText className="w-5 h-5 text-gray-500" />;
-    }
-  };
-
-  return (
-    <div className="flex flex-col h-screen bg-gray-50 font-sans text-slate-800">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm">
-        <div className="flex items-center space-x-3">
-          <div className="bg-indigo-600 p-2 rounded-lg">
-            <GraduationCap className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-gray-900">Universidad: Cultura</h1>
-            <p className="text-sm text-gray-500">Explorador de Recursos y Literatura Colonial</p>
-          </div>
-        </div>
-        <div className="relative hidden md:block">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <input 
-            type="text" 
-            placeholder="Buscar documento..." 
-            className="pl-9 pr-4 py-2 bg-gray-100 border-none rounded-full text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all w-64"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-      </header>
-
-      <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar List */}
-        <div className="w-full md:w-1/3 lg:w-1/4 bg-white border-r border-gray-200 overflow-y-auto">
-          <div className="p-4">
-            <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Archivos Detectados</h2>
-            <div className="space-y-2">
-              {filteredFiles.map((file) => (
-                <button
-                  key={file.id}
-                  onClick={() => setSelectedFile(file)}
-                  className={`w-full text-left p-3 rounded-lg flex items-start space-x-3 transition-colors ${
-                    selectedFile?.id === file.id 
-                      ? 'bg-indigo-50 border-indigo-200 border' 
-                      : 'hover:bg-gray-50 border border-transparent'
-                  }`}
-                >
-                  <div className="mt-0.5">{getIcon(file.type)}</div>
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-medium truncate ${selectedFile?.id === file.id ? 'text-indigo-900' : 'text-gray-900'}`}>
-                      {file.title}
-                    </p>
-                    {file.author && (
-                      <p className="text-xs text-gray-500 mt-0.5">{file.author} • {file.year}</p>
-                    )}
-                    <p className="text-xs text-gray-400 mt-1 truncate font-mono">{file.filename}</p>
-                  </div>
-                  {selectedFile?.id === file.id && <ChevronRight className="w-4 h-4 text-indigo-500 self-center" />}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Main Content Area */}
-        <div className="flex-1 overflow-y-auto bg-gray-50 p-6 md:p-12 flex justify-center">
-          {selectedFile ? (
-            <div className="max-w-3xl w-full bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden min-h-[500px] flex flex-col">
-              {/* File Header */}
-              <div className="bg-gray-50 px-8 py-6 border-b border-gray-100">
-                <div className="flex items-center space-x-2 mb-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium border ${
-                    selectedFile.type === 'image' ? 'bg-pink-100 text-pink-700 border-pink-200' :
-                    selectedFile.type === 'text' ? 'bg-blue-100 text-blue-700 border-blue-200' :
-                    'bg-gray-100 text-gray-700 border-gray-200'
-                  }`}>
-                    {selectedFile.category}
-                  </span>
-                  {selectedFile.year && (
-                    <span className="flex items-center text-xs text-gray-500 font-medium">
-                      <Calendar className="w-3 h-3 mr-1" />
-                      {selectedFile.year}
-                    </span>
-                  )}
+    <!-- Header / Hero -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
+                        <i class="fa-solid fa-book-open text-indigo-600 mr-2"></i>
+                        Compendio de Literatura
+                    </h1>
+                    <p class="text-slate-500 text-sm mt-1">Historia, Cultura Americana y Definiciones</p>
                 </div>
-                <h2 className="text-3xl font-serif font-bold text-gray-900 mb-2">{selectedFile.title}</h2>
-                {selectedFile.author && (
-                  <p className="text-lg text-gray-600 font-serif italic">por {selectedFile.author}</p>
-                )}
-              </div>
-
-              {/* File Body Placeholder */}
-              <div className="p-8 flex-1">
-                {selectedFile.type === 'image' ? (
-                  <div className="flex flex-col items-center justify-center h-full space-y-4 py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-                    <ImageIcon className="w-16 h-16 text-gray-300" />
-                    <p className="text-gray-500 text-center max-w-sm">
-                      Vista previa de imagen no disponible en este entorno.<br/>
-                      <span className="text-xs text-gray-400 font-mono mt-2 block">{selectedFile.filename}</span>
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    <div className="p-4 bg-yellow-50 border border-yellow-100 rounded-lg text-yellow-800 text-sm flex items-start">
-                       <span className="mr-2 text-xl">💡</span>
-                       <p>
-                         Este es un archivo HTML estático detectado en la carpeta <strong>universidad/cultura</strong>. 
-                         En un entorno real, aquí se mostraría el contenido completo del texto, incluyendo las anotaciones y enlaces internos.
-                       </p>
+                
+                <!-- Search Bar -->
+                <div class="relative w-full md:w-96">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-search text-slate-400"></i>
                     </div>
-                    
-                    <div className="space-y-4 animate-pulse">
-                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                      <div className="h-4 bg-gray-200 rounded w-full"></div>
-                      <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-                      <div className="h-4 bg-gray-200 rounded w-full"></div>
-                    </div>
-                    
-                    <div className="pt-8 border-t border-gray-100">
-                       <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">Metadatos del Archivo</h3>
-                       <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
-                         <div className="sm:col-span-1">
-                           <dt className="text-xs font-medium text-gray-500">Ruta Original</dt>
-                           <dd className="mt-1 text-sm text-gray-900 font-mono break-all">{`universidad/cultura/${selectedFile.filename}`}</dd>
-                         </div>
-                         <div className="sm:col-span-1">
-                           <dt className="text-xs font-medium text-gray-500">Tipo</dt>
-                           <dd className="mt-1 text-sm text-gray-900 capitalize">{selectedFile.type}</dd>
-                         </div>
-                       </dl>
-                    </div>
-                  </div>
-                )}
-              </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out" 
+                        placeholder="Buscar textos, autores o definiciones...">
+                </div>
             </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full text-center max-w-md">
-              <div className="bg-white p-6 rounded-full shadow-sm mb-6">
-                <BookOpen className="w-16 h-16 text-indigo-200" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Selecciona un documento</h3>
-              <p className="text-gray-500">
-                Navega por la lista de la izquierda para ver los detalles de los textos, análisis y mapas encontrados en la carpeta de la universidad.
-              </p>
-            </div>
-          )}
         </div>
-      </div>
-    </div>
-  );
-};
+    </header>
 
-export default CourseViewer;
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Column 1: Main Texts (Takes up 2 columns on large screens) -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Section: Textos Fundamentales -->
+                <section>
+                    <div class="flex items-center mb-4">
+                        <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">Principal</span>
+                        <h2 class="text-xl font-bold text-slate-800">Textos y Análisis Cultural</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="mainTextsList">
+                        <!-- Timeline -->
+                        <a href="universidad/cultura/01_timeline_textos.html" class="search-item block group">
+                            <div class="bg-white p-6 rounded-xl border border-slate-200 card-hover h-full border-l-4 border-l-indigo-500">
+                                <div class="flex justify-between items-start">
+                                    <h3 class="text-lg font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">Timeline de Textos</h3>
+                                    <i class="fa-solid fa-timeline text-slate-300 group-hover:text-indigo-500"></i>
+                                </div>
+                                <p class="text-sm text-slate-500 mt-2 line-clamp-2">Cronología general de las obras y eventos históricos.</p>
+                            </div>
+                        </a>
+
+                        <!-- Evolución Identidad -->
+                        <a href="universidad/cultura/c_evolución-de-la-identidad-americana.html" class="search-item block group">
+                            <div class="bg-white p-6 rounded-xl border border-slate-200 card-hover h-full border-l-4 border-l-purple-500">
+                                <div class="flex justify-between items-start">
+                                    <h3 class="text-lg font-semibold text-slate-900 group-hover:text-purple-600 transition-colors">Evolución de la Identidad</h3>
+                                    <i class="fa-solid fa-fingerprint text-slate-300 group-hover:text-purple-500"></i>
+                                </div>
+                                <p class="text-sm text-slate-500 mt-2">Análisis sobre la conformación de la identidad americana.</p>
+                            </div>
+                        </a>
+
+                        <!-- Richard Frethorne -->
+                        <a href="universidad/cultura/02.1_1623-frethorne,-richard-letter-to-his-parents.html" class="search-item block group">
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 card-hover h-full">
+                                <span class="text-xs font-mono text-slate-400 mb-1 block">1623</span>
+                                <h3 class="text-base font-semibold text-slate-900 group-hover:text-indigo-600">Richard Frethorne: Letter to Parents</h3>
+                                <p class="text-xs text-slate-500 mt-2">Carta histórica describiendo las dificultades en la colonia.</p>
+                            </div>
+                        </a>
+
+                         <!-- Vocabulario Frethorne -->
+                         <a href="universidad/cultura/02.2_vocabulario-histórico-frethorne-letter-to-his-parents.html" class="search-item block group">
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 border-dashed hover:border-slate-300 hover:bg-white transition-colors h-full">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-spell-check text-slate-400"></i>
+                                    <h3 class="text-sm font-medium text-slate-700">Vocabulario: Frethorne</h3>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- John Winthrop -->
+                        <a href="universidad/cultura/02.3_1630-winthrop,-john-a-model-of-christian-charity.html" class="search-item block group">
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 card-hover h-full">
+                                <span class="text-xs font-mono text-slate-400 mb-1 block">1630</span>
+                                <h3 class="text-base font-semibold text-slate-900 group-hover:text-indigo-600">John Winthrop: Christian Charity</h3>
+                                <p class="text-xs text-slate-500 mt-2">El famoso sermón "City upon a Hill".</p>
+                            </div>
+                        </a>
+
+                        <!-- Anne Bradstreet -->
+                        <a href="universidad/cultura/02.5_1650-bradstreet,-anne-poemas.html" class="search-item block group">
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 card-hover h-full">
+                                <span class="text-xs font-mono text-slate-400 mb-1 block">1650</span>
+                                <h3 class="text-base font-semibold text-slate-900 group-hover:text-indigo-600">Anne Bradstreet: Poemas</h3>
+                                <p class="text-xs text-slate-500 mt-2">Colección de poesía de la primera escritora publicada en las colonias.</p>
+                            </div>
+                        </a>
+
+                        <!-- Bradstreet Analysis -->
+                        <a href="universidad/cultura/02.6_ritmo-y-estructura-to-my-dear-and-loving-husband.html" class="search-item block group">
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 card-hover h-full">
+                                <h3 class="text-base font-semibold text-slate-900 group-hover:text-indigo-600">Análisis: To My Dear and Loving Husband</h3>
+                                <p class="text-xs text-slate-500 mt-2">Estudio de ritmo y estructura.</p>
+                            </div>
+                        </a>
+
+                        <!-- Massachusetts Colony -->
+                        <a href="universidad/cultura/colonia-de-la-bahía-de-massachusetts.html" class="search-item block group">
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 card-hover h-full">
+                                <div class="flex justify-between items-start">
+                                    <h3 class="text-base font-semibold text-slate-900 group-hover:text-indigo-600">Colonia de la Bahía de Mass.</h3>
+                                    <i class="fa-solid fa-landmark text-slate-300"></i>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-2">Contexto histórico y geográfico.</p>
+                            </div>
+                        </a>
+
+                         <!-- Anáfora -->
+                         <a href="universidad/cultura/anáfora.html" class="search-item block group">
+                            <div class="bg-white p-5 rounded-xl border border-slate-200 card-hover h-full">
+                                <h3 class="text-base font-semibold text-slate-900 group-hover:text-indigo-600">Recurso: Anáfora</h3>
+                                <p class="text-xs text-slate-500 mt-2">Definición retórica y ejemplos.</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Additional Context -->
+                <section>
+                    <div class="bg-indigo-50 rounded-xl p-6 border border-indigo-100">
+                        <h3 class="text-indigo-900 font-bold mb-2"><i class="fa-solid fa-circle-info mr-2"></i>Sobre este compendio</h3>
+                        <p class="text-indigo-800 text-sm">
+                            Este sitio web contiene una colección de textos primarios, análisis literarios y definiciones históricas relacionadas con el periodo colonial temprano de América del Norte y la literatura puritana.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Column 2: Glossary (Sticky sidebar on large screens) -->
+            <div class="lg:col-span-1">
+                <div class="sticky top-24">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold text-slate-800">Glosario y Definiciones</h2>
+                        <span class="text-xs bg-slate-200 text-slate-600 px-2 py-1 rounded-full" id="glossaryCount">0 términos</span>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col max-h-[calc(100vh-10rem)]">
+                        <div class="p-4 border-b border-slate-100 bg-slate-50">
+                             <a href="definitions/definiciones-cultura.html" class="text-sm font-semibold text-indigo-600 hover:underline block mb-1">
+                                Ver índice completo de definiciones &rarr;
+                            </a>
+                        </div>
+                        <div class="overflow-y-auto p-2 space-y-1" id="glossaryList">
+                            <!-- Javascript will populate linking logic here based on search, but we put static links for SEO/No-JS -->
+                            <a href="definitions/abridge.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Abridge
+                            </a>
+                            <a href="definitions/bids.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Bids
+                            </a>
+                            <a href="definitions/bloody-flux.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-red-500 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Bloody Flux
+                            </a>
+                            <a href="definitions/dayes.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Dayes
+                            </a>
+                            <a href="definitions/doth.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Doth
+                            </a>
+                            <a href="definitions/endowed-(en-gb).html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Endowed
+                            </a>
+                             <a href="definitions/feel’st.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Feel'st
+                            </a>
+                            <a href="definitions/fledgling.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Fledgling
+                            </a>
+                            <a href="definitions/forth-(en-gb).html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Forth
+                            </a>
+                            <a href="definitions/fowl-(en-gb).html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Fowl
+                            </a>
+                            <a href="definitions/hath.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Hath
+                            </a>
+                            <a href="definitions/hereof-(en-gb).html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Hereof
+                            </a>
+                            <a href="definitions/herse.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Herse
+                            </a>
+                            <a href="definitions/interr’d.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Interr'd
+                            </a>
+                            <a href="definitions/joyes.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Joyes
+                            </a>
+                            <a href="definitions/manifold.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Manifold
+                            </a>
+                            <a href="definitions/meane.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Meane
+                            </a>
+                            <a href="definitions/ought.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Ought
+                            </a>
+                            <a href="definitions/poignancy-(en-gb).html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Poignancy
+                            </a>
+                            <a href="definitions/scurvy.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-red-500 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Scurvy
+                            </a>
+                             <a href="definitions/shew-(en-gb).html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Shew
+                            </a>
+                            <a href="definitions/the-sentence.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>The Sentence
+                            </a>
+                            <a href="definitions/thine.html" class="search-item block px-3 py-2 rounded hover:bg-slate-50 text-sm text-slate-600 hover:text-indigo-600 transition-colors">
+                                <i class="fa-solid fa-angle-right text-xs text-slate-300 mr-2"></i>Thine
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-400 text-sm">
+            <p>&copy; 2024 - Documentación y Recursos Académicos.</p>
+        </div>
+    </footer>
+
+    <!-- Search Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const items = document.querySelectorAll('.search-item');
+            const glossaryCount = document.getElementById('glossaryCount');
+            const glossaryList = document.getElementById('glossaryList');
+
+            // Count glossary items
+            const count = glossaryList.querySelectorAll('a').length;
+            glossaryCount.textContent = `${count} términos`;
+
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                let matches = 0;
+
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase() + (item.querySelector('p')?.textContent.toLowerCase() || '');
+                    
+                    if (text.includes(term)) {
+                        item.classList.remove('hidden');
+                        matches++;
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+
+                // Visual feedback if no results
+                if (matches === 0 && term !== '') {
+                    // Could add a "No results" message logic here
+                }
+            });
+        });
+    </script>
+</body>
+</html>
